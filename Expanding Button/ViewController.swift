@@ -29,40 +29,39 @@ class ViewController: UIViewController {
 
     @objc fileprivate func buttonTapped(_ sender: UIButton) {
         print("button tapped!")
-//        makeButtonsAppear()
+        self.makeButtonsAppear(sender: sender)
     }
     
     func makeButtonsAppear(sender: UIButton) {
         for i in 0...4 {
             let button = UIButton()
-            button.frame = CGRect(x: 50, y: 50, width: 56, height: 56)
-            button.backgroundColor = UIColor.purple
+            button.frame = CGRect(x: sender.frame.origin.x, y: sender.frame.origin.y, width: 56, height: 56)
+            button.center = sender.center
+            
             print("button: \(i)")
             
             switch i {
             case 0:
                 button.setImage(#imageLiteral(resourceName: "snapchat"), for: .normal)
-                button.alpha = 1
-                self.view.addSubview(button)
+                button.center.y = sender.center.y - 100
 
             case 1:
                 button.setImage(#imageLiteral(resourceName: "google-plus"), for: .normal)
-                button.alpha = 1
-                self.view.addSubview(button)
+                button.center.x = sender.center.x + 100
+                
             case 2:
                 button.setImage(#imageLiteral(resourceName: "twitter"), for: .normal)
-                button.alpha = 1
-                self.view.addSubview(button)
+                button.center.x = sender.center.x - 100
+                
             case 3:
                 button.setImage(#imageLiteral(resourceName: "telegram"), for: .normal)
-                button.alpha = 1
-                self.view.addSubview(button)
+                
             case 4:
                 button.setImage(#imageLiteral(resourceName: "soundcloud"), for: .normal)
-                self.view.addSubview(button)
             default:
                 return
             }
+            self.view.addSubview(button)
         }
     }
     
