@@ -55,9 +55,14 @@ class ViewController: UIViewController {
                 
             case 3:
                 button.setImage(#imageLiteral(resourceName: "telegram"), for: .normal)
+                button.center.x = (sender.center.x + 100 * (cos(45.0)))
+                button.center.y = (sender.center.y + 100 * (sin(45.0)))
                 
             case 4:
                 button.setImage(#imageLiteral(resourceName: "soundcloud"), for: .normal)
+                button.center.x = (sender.center.x - 100 * (cos(-45.0)))
+                button.center.y = (sender.center.y - 100 * (sin(-45.0)))
+                
             default:
                 return
             }
