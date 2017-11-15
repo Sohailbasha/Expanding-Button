@@ -16,61 +16,88 @@ class ViewController: UIViewController {
         button.backgroundColor = UIColor.lightGray
         button.setImage(#imageLiteral(resourceName: "add"), for: .normal)
         button.layer.cornerRadius = 0.5 * button.layer.bounds.height
-//        button.clipsToBounds = true
+        //        button.clipsToBounds = true
         return button
     }()
-
+    
+    var didTap: Bool = false
+    var buttons: [UIButton] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.centerButton.center = self.view.center
         self.centerButton.addTarget(self, action: #selector(self.buttonTapped(_:)), for: .touchUpInside)
         self.view.addSubview(centerButton)
-    }
-
-    @objc fileprivate func buttonTapped(_ sender: UIButton) {
-        print("button tapped!")
-        self.makeButtonsAppear(sender: sender)
+        addButtons()
     }
     
-    func makeButtonsAppear(sender: UIButton) {
-        for i in 0...4 {
+    @objc fileprivate func buttonTapped(_ sender: UIButton) {
+        didTap == true ? makeButtonsDissapear() : makeButtonsAppear(sender: sender)
+    }
+    
+    func addButtons() {
+        for i in 0...3 {
             let button = UIButton()
-            button.frame = CGRect(x: sender.frame.origin.x, y: sender.frame.origin.y, width: 56, height: 56)
-            button.center = sender.center
-            
-            print("button: \(i)")
-            
+            button.frame = CGRect(x: 0, y: 0, width: 56, height: 56)
+            button.center = self.view.center
+            button.alpha = 0
             switch i {
             case 0:
                 button.setImage(#imageLiteral(resourceName: "snapchat"), for: .normal)
-                button.center.y = sender.center.y - 100
-
             case 1:
-                button.setImage(#imageLiteral(resourceName: "google-plus"), for: .normal)
-                button.center.x = sender.center.x + 100
-                
+                button.setImage(#imageLiteral(resourceName: "linkedin"), for: .normal)
             case 2:
                 button.setImage(#imageLiteral(resourceName: "twitter"), for: .normal)
-                button.center.x = sender.center.x - 100
-                
             case 3:
-                button.setImage(#imageLiteral(resourceName: "telegram"), for: .normal)
-                button.center.x = (sender.center.x + 100 * (cos(45.0)))
-                button.center.y = (sender.center.y + 100 * (sin(45.0)))
-                
-            case 4:
                 button.setImage(#imageLiteral(resourceName: "soundcloud"), for: .normal)
-                button.center.x = (sender.center.x - 100 * (cos(-45.0)))
-                button.center.y = (sender.center.y - 100 * (sin(-45.0)))
-                
             default:
                 return
             }
-            self.view.addSubview(button)
+            self.buttons.append(button)
         }
     }
     
-
+    
+    func makeButtonsAppear(sender: UIButton) {
+        for i in 0...3 {
+            let button = buttons[i]
+            UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: [], animations: {
+                self.centerButton.transform = CGAffineTransform(rotationAngle: CGFloat(45.0 * Double.pi / 180))
+                self.view.addSubview(button)
+                button.alpha = 1
+                switch i {
+                case 0:
+                    button.center.y = sender.center.y - 100
+                case 1:
+                    button.center.x = sender.center.x + 100
+                case 2:
+                    button.center.x = sender.center.x - 100
+                case 3:
+                    button.center.y = sender.center.y + 100
+                default:
+                    return
+                }
+            }, completion: { (_) in
+                self.didTap = true
+            })
+        }
+    }
+    
+    func makeButtonsDissapear() {
+        for i in 0...3 {
+            let button = buttons[i]
+            UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: [], animations: {
+                self.centerButton.transform = CGAffineTransform.identity
+                button.center = self.view.center
+                button.alpha = 0
+            }, completion: { (_) in
+                self.didTap = false
+                button.removeFromSuperview()
+            })
+        }
+    }
+    
+    
     
     
 }
