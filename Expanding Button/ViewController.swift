@@ -16,7 +16,6 @@ class ViewController: UIViewController {
         button.backgroundColor = UIColor.lightGray
         button.setImage(#imageLiteral(resourceName: "add"), for: .normal)
         button.layer.cornerRadius = 0.5 * button.layer.bounds.height
-        //        button.clipsToBounds = true
         return button
     }()
     
